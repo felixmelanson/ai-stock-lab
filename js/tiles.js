@@ -93,16 +93,12 @@ function buildGrid() {
       <div style="position:absolute;top:7.5px;left:50%;transform:translateX(-50%);width:90%;height:55%;border-radius:20px 20px 0 0;pointer-events:none;opacity:0.4;mix-blend-mode:plus-lighter;background:linear-gradient(to bottom,rgba(255,255,255,0.4),transparent);z-index:2"></div>
       <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:90%;height:45%;border-radius:0 0 20px 20px;pointer-events:none;opacity:0.3;mix-blend-mode:plus-lighter;background:linear-gradient(to top,rgba(255,255,255,0.45),transparent);z-index:2"></div>
 
-      <div style="position:absolute;top:10px;right:20px;z-index:20">
-        <span style="${rankStyle(i)}">${ordinal(i + 1)}</span>
-      </div>
-
       <div style="position:relative;z-index:20;padding:10px;border-radius:14px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 0 14px ${f.facet};overflow:hidden">
         <img src="${tile.logo}" alt="${tile.model}" style="width:2.4rem;height:2.4rem;object-fit:contain;display:block;position:relative;z-index:2" />
       </div>
 
       <div style="position:relative;z-index:20;text-align:center;width:100%;padding-bottom:.4rem;margin-top:1rem">
-        <span style="${modelTextStyle}">${tile.model}</span>
+        <span style="${modelTextStyle}"><span style="color:rgba(255,255,255,0.32)">#${i + 1}</span> ${tile.model}</span>
       </div>
 
       <div style="position:relative;z-index:20;width:100%;padding:0.25rem 0;display:flex;flex-direction:column;align-items:center;gap:0.25rem">
