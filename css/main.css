@@ -13,85 +13,119 @@ html, body {
 }
 #app.loading { transform: scale(.99); pointer-events: none; }
 
-/* ── fixed GitHub button — top right ── */
-#github-btn {
+/* ── liquid glass pills ── */
+#brand-pill,
+#github-pill {
   position: fixed;
-  top: 1.5rem;
-  right: 1.75rem;
   z-index: 9999;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.05);
+  gap: 0;
+  padding: 0 1.5rem;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.12);
-  color: rgba(255,255,255,0.6);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 -1px 0 rgba(0,0,0,0.3);
+  backdrop-filter: url(#pill-glass);
+  -webkit-backdrop-filter: url(#pill-glass);
   text-decoration: none;
-  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  color: rgba(255,255,255,0.72);
+  transition: color 0.2s, background 0.2s, transform 0.18s;
+  cursor: default;
 }
-#github-btn:hover {
+body.safari #brand-pill,
+body.safari #github-pill {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+#brand-pill { 
+  top: 1.75rem; 
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 -1px 0 rgba(0,0,0,0.3),
+    0 16px 48px rgba(0,0,0,0.4);
+  filter: blur(0.3px);
+}
+#github-pill {
+  bottom: 1.75rem;
+  right: 1.75rem;
+  cursor: pointer;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 -1px 0 rgba(0,0,0,0.3),
+    0 16px 48px rgba(0,0,0,0.4);
+  filter: blur(0.3px);
+}
+#github-pill:hover {
   color: rgba(255,255,255,0.95);
   background: rgba(255,255,255,0.1);
-  transform: scale(1.05);
+  transform: translateY(-1px);
 }
-#github-btn svg { width: 26px; height: 26px; flex-shrink: 0; }
+.pill-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+.pill-wordmark {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+.pill-wordmark.left {
+  margin-right: 1rem;
+  justify-content: flex-end;
+  text-align: right;
+}
+.pill-wordmark.right {
+  margin-left: 1rem;
+  justify-content: flex-start;
+  text-align: left;
+}
+.pill-divider {
+  border-left: 1px solid rgba(255,255,255,0.3);
+  height: 20px;
+  margin: 0 0.5rem;
+  flex-shrink: 0;
+}
+.pill-gh-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
 
 /* ── tile area ── */
 #tile-area {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 5rem 1.75rem 0;
+  padding: 5.5rem 1.75rem 0;
   position: relative;
   z-index: 60;
 }
 
-/* ── rank row ── */
-#rank-row {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 0.55rem;
-}
-.rank-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.3rem 0;
-}
-.rank-text {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(10px, 1vw, 12px);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.rank-badge.rank-1 .rank-text {
-  background: linear-gradient(180deg, #FFE566 0%, #FFB800 45%, #E8890A 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 8px rgba(255,190,0,0.9)) drop-shadow(0 0 18px rgba(255,160,0,0.5));
-}
-.rank-badge.rank-2 .rank-text {
-  background: linear-gradient(180deg, #F2F2F2 0%, #C8C8C8 50%, #A0A0A0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 5px rgba(210,210,210,0.6));
-}
-.rank-badge.rank-3 .rank-text {
-  background: linear-gradient(180deg, #F0A050 0%, #CD7F32 50%, #A0601A 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 5px rgba(190,120,40,0.6));
-}
-.rank-badge.rank-other .rank-text { color: rgba(255,255,255,0.28); }
 
 /* ── tile grid ── */
 #tile-grid {
@@ -119,28 +153,22 @@ html, body {
   z-index: 20;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0 16px;
   background: linear-gradient(to bottom, rgba(0,0,0,0.22) 0%, transparent 100%);
   pointer-events: none;
 }
-.chart-title {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-}
-.chart-title img {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  opacity: 0.6;
-}
-.brand-wordmark {
+.graph-title-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: 'Orbitron', sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.18em;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 .chart-actions {
   display: flex;
@@ -698,32 +726,80 @@ html, body {
 }
 .endpoint-wrap { animation: ep-fadein 0.4s ease-out both; }
 
-/* chart guideline */
+/* chart guidelines — dashed crosshair */
 #chart-guideline {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 1px;
-  background: rgba(255,255,255,0.16);
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.28) 0px,
+    rgba(255,255,255,0.28) 4px,
+    transparent 4px,
+    transparent 9px
+  );
   pointer-events: none;
   display: none;
   z-index: 5;
 }
+#chart-hguideline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(255,255,255,0.28) 0px,
+    rgba(255,255,255,0.28) 4px,
+    transparent 4px,
+    transparent 9px
+  );
+  pointer-events: none;
+  display: none;
+  z-index: 5;
+}
+/* + marker at crosshair intersection */
+#chart-crosshair {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  display: none;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+}
+#chart-crosshair::before,
+#chart-crosshair::after {
+  content: '';
+  position: absolute;
+  background: rgba(255,255,255,0.75);
+}
+#chart-crosshair::before {
+  left: 50%; top: 0; bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+}
+#chart-crosshair::after {
+  top: 50%; left: 0; right: 0;
+  height: 1px;
+  transform: translateY(-50%);
+}
 
-/* chart tooltip */
+/* chart tooltip — frosted glass */
 #chart-tooltip {
   position: absolute;
   pointer-events: none;
   display: none;
   z-index: 20;
   min-width: 185px;
-  background: rgba(8,8,18,0.94);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(10,10,22,0.52);
+  border: 1px solid rgba(255,255,255,0.14);
   border-radius: 12px;
   padding: 10px 13px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
 }
 .tooltip-date {
   font-size: 10px;
@@ -775,6 +851,30 @@ html, body {
   transform: scale(1);
 }
 
+/* ── about section ── */
+#about-section {
+  max-width: 1400px;
+  margin: 2rem auto 0;
+  padding: 0 1.75rem 8rem;
+}
+.about-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.22);
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+.about-placeholder {
+  width: 100%;
+  height: 220px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.018);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-style: dashed;
+}
+
 /* ── responsive ── */
 @media (max-width: 1100px) {
   #chart-section { height: auto; flex-direction: column; }
@@ -783,11 +883,7 @@ html, body {
 }
 @media (max-width: 900px) {
   #tile-grid { grid-template-columns: repeat(4, 1fr); }
-  #rank-row  { grid-template-columns: repeat(4, 1fr); }
-  #github-btn { width: 52px; height: 52px; }
-  #github-btn svg { width: 22px; height: 22px; }
 }
 @media (max-width: 600px) {
   #tile-grid { grid-template-columns: repeat(2, 1fr); }
-  #rank-row  { grid-template-columns: repeat(2, 1fr); }
 }

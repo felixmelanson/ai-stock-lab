@@ -51,9 +51,59 @@
     </div>
   </div>
 
-  <!-- Fixed GitHub button — top right -->
-  <a href="https://github.com" id="github-btn" target="_blank" rel="noopener" title="GitHub">
-    <svg viewBox="0 0 24 24" fill="currentColor">
+  <!-- SVG glass filter defs -->
+  <svg id="glass-defs" xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden;">
+    <defs>
+      <filter id="pill-glass" x="-5%" y="-30%" width="110%" height="160%" color-interpolation-filters="sRGB">
+        <feImage id="pill-map-img" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="dispMap"/>
+        <feDisplacementMap in="SourceGraphic" in2="dispMap" scale="30" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+  <script>
+    (function(){
+      if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) document.body.classList.add('safari')
+      // Inward glass-lens displacement via canvas SDF
+      // EDGE=R keeps distortion strictly within the rounded corners/rim — center stays neutral
+      // Intensity capped so fold condition (f'=1+dD/dy>0) is never violated
+      var W=400,H=56,R=14,EDGE=R,INTENSITY=50
+      var cv=document.createElement('canvas'); cv.width=W; cv.height=H
+      var ctx=cv.getContext('2d'), id=ctx.createImageData(W,H), px=id.data
+      var hw=W/2,hh=H/2,iw=hw-R,ih=hh-R
+      for(var y=0;y<H;y++){for(var x=0;x<W;x++){
+        // Rounded-rect SDF: positive = inside pill, 0 = on rim
+        var qx=Math.abs(x-hw)-iw, qy=Math.abs(y-hh)-ih
+        var sdf=-(Math.min(Math.max(qx,qy),0)+Math.sqrt(Math.max(qx,0)*Math.max(qx,0)+Math.max(qy,0)*Math.max(qy,0))-R)
+        var nr=128,ng=128
+        if(sdf>0&&sdf<EDGE){
+          var t=1-sdf/EDGE; t=t*t  // quadratic falloff: 1 at rim, 0 at EDGE px inward
+          // Outward surface normal
+          var ox=0,oy=0
+          if(qx>0&&qy>0){var l=Math.sqrt(qx*qx+qy*qy);ox=qx/l*Math.sign(x-hw);oy=qy/l*Math.sign(y-hh)}
+          else if(qx>=qy){ox=Math.sign(x-hw)}
+          else{oy=Math.sign(y-hh)}
+          // Inward = negate the outward normal → each edge bends toward pill interior
+          nr=128+Math.round(-ox*INTENSITY*t)
+          ng=128+Math.round(-oy*INTENSITY*t)
+        }
+        var i=(y*W+x)*4; px[i]=nr; px[i+1]=ng; px[i+2]=128; px[i+3]=255
+      }}
+      ctx.putImageData(id,0,0)
+      var el=document.getElementById('pill-map-img')
+      if(el) el.setAttributeNS('http://www.w3.org/1999/xlink','href',cv.toDataURL())
+    })()
+  </script>
+
+  <!-- Bottom-left brand pill -->
+  <div id="brand-pill">
+    <span class="pill-wordmark left">AI MODEL</span>
+    <img src="assets/icon.png" alt="Model Market Arena" class="pill-logo" />
+    <span class="pill-wordmark right">STOCK LAB</span>
+  </div>
+
+  <!-- Bottom-right GitHub pill -->
+  <a href="https://github.com" id="github-pill" target="_blank" rel="noopener">
+    <svg class="pill-gh-icon" viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.929.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
     </svg>
   </a>
@@ -61,7 +111,6 @@
   <div id="app" class="loading">
 
     <div id="tile-area">
-      <div id="rank-row"></div>
       <div id="tile-grid"></div>
     </div>
 
@@ -81,10 +130,7 @@
         <!-- graph panel: header overlay + canvas + endpoint circles + tooltip -->
         <div id="graph-panel">
           <div id="graph-header">
-            <div class="chart-title">
-              <img src="assets/icon.png" alt="AI Stock Lab" />
-              <span class="brand-wordmark">AI STOCK LAB</span>
-            </div>
+            <span id="graph-title" class="graph-title-text">EQUITY CURVES</span>
             <div class="chart-actions">
               <span class="filter-label">FILTER</span>
               <svg class="filter-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -97,9 +143,21 @@
           <canvas id="portfolio-chart"></canvas>
           <div id="endpoint-circles"></div>
           <div id="chart-guideline"></div>
+          <div id="chart-hguideline"></div>
+          <div id="chart-crosshair"></div>
           <div id="chart-tooltip"></div>
         </div>
 
+      </div>
+    </div>
+
+    <!-- About section placeholder -->
+    <div id="about-section">
+      <div class="about-title">ABOUT THIS PROJECT</div>
+      <div class="about-placeholder">
+        <div style="float:right;">
+          <img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRkHWVxLzps-WUlLxMbJ98e8BPuoFey9Q5ubmbg3RNRehG_w-UJ" alt="Image 1" style="display:block;margin-bottom:10px;max-width:200px;" />
+        </div>
       </div>
     </div>
 

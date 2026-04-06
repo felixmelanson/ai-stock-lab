@@ -2,20 +2,9 @@ const STARTING_AMOUNT = 100000
 
 let selectedTileIdx = null
 
-function buildRankRow() {
-  const row = document.getElementById('rank-row')
-  const labels = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th']
-
-  TILES.forEach((_tile, i) => {
-    const badge = document.createElement('div')
-    const rankNum = i + 1
-    badge.className = 'rank-badge ' + (rankNum <= 3 ? 'rank-' + rankNum : 'rank-other')
-    const span = document.createElement('span')
-    span.className = 'rank-text'
-    span.textContent = labels[i]
-    badge.appendChild(span)
-    row.appendChild(badge)
-  })
+function setGraphTitle(text) {
+  const el = document.getElementById('graph-title')
+  if (el) el.textContent = text
 }
 
 function selectTile(idx) {
@@ -24,7 +13,7 @@ function selectTile(idx) {
     el.classList.toggle('dimmed', i !== idx)
     el.classList.toggle('selected', i === idx)
   })
-  // switch left panel to portfolio tab
+  setGraphTitle(TILES[idx].model)
   if (typeof showPortfolio === 'function') showPortfolio(TILES[idx])
 }
 
@@ -33,7 +22,24 @@ function deselectTile() {
   document.querySelectorAll('.tile-wrap').forEach(el => {
     el.classList.remove('dimmed', 'selected')
   })
+  setGraphTitle('EQUITY CURVES')
   if (typeof showActivity === 'function') showActivity()
+}
+
+// ── rank helpers ──────────────────────────────────────────────────────────
+function ordinal(n) {
+  if (n === 1) return '1ST'
+  if (n === 2) return '2ND'
+  if (n === 3) return '3RD'
+  return n + 'TH'
+}
+
+function rankStyle(i) {
+  const base = `display:inline-block;font-size:clamp(9px,1.1vw,11px);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;line-height:1.4;font-family:inherit`
+  if (i === 0) return `${base};background:linear-gradient(135deg,#FFD700 0%,#FFC800 40%,#FFE066 60%,#FFD700 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text`
+  if (i === 1) return `${base};background:linear-gradient(135deg,#A8A8A8 0%,#E0E0E0 45%,#C0C0C0 65%,#A8A8A8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text`
+  if (i === 2) return `${base};background:linear-gradient(135deg,#B06020 0%,#E09050 45%,#C87840 65%,#B06020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text`
+  return `${base};color:rgba(255,255,255,0.32)`
 }
 
 function buildGrid() {
@@ -48,6 +54,9 @@ function buildGrid() {
     const deltaAbbrev = (delta >= 0 ? '+' : '') + pct + '%'
     const triangleSymbol = delta >= 0 ? '▲' : '▼'
     const deltaColor = 'rgba(255,255,255,0.32)'
+    const modelTextStyle = `display:block;font-size:clamp(11px,1.3vw,13px);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.65);line-height:1.4;font-family:inherit`
+    const metricsTextStyle = `font-size:clamp(9px,1vw,11px);font-weight:700;letter-spacing:0.06em;color:rgba(255,255,255,0.32);font-variant-numeric:tabular-nums`
+    const metricsDeltaStyle = `font-size:clamp(9px,1vw,11px);font-weight:700;color:${deltaColor};letter-spacing:0.03em`
 
     const wrap = document.createElement('div')
     wrap.className = 'tile-wrap'
@@ -84,15 +93,22 @@ function buildGrid() {
       <div style="position:absolute;top:7.5px;left:50%;transform:translateX(-50%);width:90%;height:55%;border-radius:20px 20px 0 0;pointer-events:none;opacity:0.4;mix-blend-mode:plus-lighter;background:linear-gradient(to bottom,rgba(255,255,255,0.4),transparent);z-index:2"></div>
       <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:90%;height:45%;border-radius:0 0 20px 20px;pointer-events:none;opacity:0.3;mix-blend-mode:plus-lighter;background:linear-gradient(to top,rgba(255,255,255,0.45),transparent);z-index:2"></div>
 
-      <div style="position:relative;z-index:20;padding:10px;border-radius:14px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 0 14px ${f.facet};margin-top:.25rem;overflow:hidden">
+      <div style="position:absolute;top:10px;right:20px;z-index:20">
+        <span style="${rankStyle(i)}">${ordinal(i + 1)}</span>
+      </div>
+
+      <div style="position:relative;z-index:20;padding:10px;border-radius:14px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 0 14px ${f.facet};overflow:hidden">
         <img src="${tile.logo}" alt="${tile.model}" style="width:2.4rem;height:2.4rem;object-fit:contain;display:block;position:relative;z-index:2" />
       </div>
 
-      <div style="position:relative;z-index:20;text-align:center;width:100%;padding-bottom:.4rem">
-        <span style="display:block;font-size:clamp(9px,1.1vw,11px);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.65);line-height:1.4">${tile.model}</span>
-        <div style="display:flex;align-items:center;justify-content:center;gap:0.35rem;margin-top:3px">
-          <span style="font-size:clamp(7px,0.85vw,9px);font-weight:700;letter-spacing:0.06em;color:rgba(255,255,255,0.32);font-variant-numeric:tabular-nums">${tile.portfolio}</span>
-          <span style="font-size:clamp(7px,0.82vw,9px);font-weight:700;color:${deltaColor};letter-spacing:0.03em">${triangleSymbol} ${deltaAbbrev}</span>
+      <div style="position:relative;z-index:20;text-align:center;width:100%;padding-bottom:.4rem;margin-top:1rem">
+        <span style="${modelTextStyle}">${tile.model}</span>
+      </div>
+
+      <div style="position:relative;z-index:20;width:100%;padding:0.25rem 0;display:flex;flex-direction:column;align-items:center;gap:0.25rem">
+        <div style="display:flex;align-items:center;justify-content:center;gap:0.25rem">
+          <span style="${metricsTextStyle}">${tile.portfolio}</span>
+          <span style="${metricsDeltaStyle}">${triangleSymbol} ${deltaAbbrev}</span>
         </div>
       </div>
     `
@@ -109,5 +125,4 @@ function buildGrid() {
   })
 }
 
-buildRankRow()
 buildGrid()
