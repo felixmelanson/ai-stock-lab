@@ -4,7 +4,7 @@ const CHART_MODELS = [
   { key: 'gpt4o',    label: 'GPT-4O',     logo: 'assets/company-logos/chatgpt.webp',  neon: 'hsl(174,100%,55%)',  final: 107842, seed: 2, facet: 'aquamarine' },
   { key: 'gemini',   label: 'Gemini 2.0', logo: 'assets/company-logos/gemini.png',    neon: 'hsl(142,100%,62%)',  final: 104219, seed: 3, facet: 'jade'       },
   { key: 'grok',     label: 'Grok 4.1',   logo: 'assets/company-logos/grokwhite.png', neon: 'hsl(220,12%,70%)',   final: 101653, seed: 4, facet: 'slate'      },
-  { key: 'deepseek', label: 'DeepSeek',   logo: 'assets/company-logos/deepseek.png',  neon: 'hsl(210,100%,72%)',  final:  97408, seed: 5, facet: 'moonstone'  },
+  { key: 'deepseek', label: 'DeepSeek R1',   logo: 'assets/company-logos/deepseek.png',  neon: 'hsl(210,100%,72%)',  final:  97408, seed: 5, facet: 'moonstone'  },
   { key: 'llama',    label: 'Llama 3.1',  logo: 'assets/company-logos/meta.png',      neon: 'hsl(215,85%,48%)',   final:  93174, seed: 6, facet: 'sapphire'   },
   { key: 'qwen',     label: 'Qwen 2.5',   logo: 'assets/company-logos/qwen.webp',     neon: 'hsl(268,75%,50%)',   final:  87291, seed: 7, facet: 'iolite'     },
 ]
@@ -276,7 +276,8 @@ function buildChart() {
     ctx.rect(MARGIN.left, MARGIN.top, cW, cH)
     ctx.clip()
 
-    // S&P animation — solid ruby red with glow
+    // S&P animation — solid ruby red with glow 
+    // TODO: make it look more like other lines lol
     const spProgress = Math.min(1, Math.max(0, elapsed) / ANIM_DUR)
     ctx.strokeStyle = SP500.color
     ctx.lineWidth   = 1.5

@@ -162,7 +162,7 @@ const MODEL_KEY_MAP = {
   'GPT-4O':     'gpt4o',
   'GEMINI 2.0': 'gemini',
   'GROK 4.1':   'grok',
-  'DEEPSEEK':   'deepseek',
+  'DEEPSEEK R1':   'deepseek',
   'LLAMA 3.1':  'llama',
   'QWEN 2.5':   'qwen',
 }

@@ -31,7 +31,7 @@ const TILES = [
     facet:     'moonstone',
     logo:      'assets/company-logos/deepseek.png',
     rank:      '5',
-    model:     'DEEPSEEK',
+    model:     'DEEPSEEK R1',
     portfolio: '$97,408',
   },
   {

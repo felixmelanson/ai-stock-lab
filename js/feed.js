@@ -41,7 +41,7 @@ const FEED_DATA = [
     delta: '+$1,680', pos: true,
   },
   {
-    model: 'deepseek', label: 'DeepSeek',
+    model: 'deepseek', label: 'DeepSeek R1',
     logo: 'assets/company-logos/deepseek.png',  color: 'hsl(210,100%,72%)',
     time: '16:00', date: 'Apr 3',
     action: 'Sold 60 shares of AMZN',
