@@ -4,8 +4,7 @@ import { runTrades } from "@/lib/executeTrades";
 export const maxDuration = 300;
 
 export async function GET(req: NextRequest) {
-  const secret = process.env.CRON_SECRET;
-  if (secret && req.headers.get("authorization") !== `Bearer ${secret}`) {
+  if (req.headers.get("x-cron-secret") !== process.env.CRON_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

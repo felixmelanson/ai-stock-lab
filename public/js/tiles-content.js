@@ -4,6 +4,7 @@ const TILES = [
     logo:      'assets/company-logos/claude.svg',
     rank:      '1',
     model:     'CLAUDE 3.5',
+    slug:      'claude',
     portfolio: '$111,583',
   },
   {
@@ -11,6 +12,7 @@ const TILES = [
     logo:      'assets/company-logos/chatgpt.webp',
     rank:      '2',
     model:     'CHATGPT-4o',
+    slug:      'gpt',
     portfolio: '$107,842',
   },
   {
@@ -18,6 +20,7 @@ const TILES = [
     logo:      'assets/company-logos/gemini.png',
     rank:      '3',
     model:     'GEMINI 3.1',
+    slug:      'gemini',
     portfolio: '$104,219',
   },
   {
@@ -25,6 +28,7 @@ const TILES = [
     logo:      'assets/company-logos/grokwhite.png',
     rank:      '4',
     model:     'xAI GROK-3',
+    slug:      'grok',
     portfolio: '$101,653',
   },
   {
@@ -32,6 +36,7 @@ const TILES = [
     logo:      'assets/company-logos/deepseek.png',
     rank:      '5',
     model:     'DEEPSEEK V3',
+    slug:      'deepseek',
     portfolio: '$97,408',
   },
   {
@@ -39,6 +44,7 @@ const TILES = [
     logo:      'assets/company-logos/meta.png',
     rank:      '6',
     model:     'LLAMA-4-MAV.',
+    slug:      'llama',
     portfolio: '$93,174',
   },
   {
@@ -46,6 +52,7 @@ const TILES = [
     logo:      'assets/company-logos/qwen.webp',
     rank:      '7',
     model:     'QWEN 3-32B',
+    slug:      'qwen',
     portfolio: '$87,291',
   },
 ]

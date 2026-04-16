@@ -11,17 +11,6 @@ const SECTOR_COLORS = {
   'Cash':           '#3a3a3a',
 }
 
-// Map frontend tile key → API slug (tile key "gpt4o" → API "gpt")
-const API_SLUG_MAP = {
-  claude:   'claude',
-  gpt4o:    'gpt',
-  gemini:   'gemini',
-  grok:     'grok',
-  deepseek: 'deepseek',
-  llama:    'llama',
-  qwen:     'qwen',
-}
-
 // ── Formatters ────────────────────────────────────────────────────────────────
 function fmtUSD(val, forceSign = false) {
   if (val === null || val === undefined) return 'N/A'
@@ -111,26 +100,16 @@ async function renderPortfolio(tile) {
   loading.textContent = 'Loading…'
   container.appendChild(loading)
 
-  const key     = MODEL_KEY_MAP[tile.model]
-  const apiSlug = API_SLUG_MAP[key] ?? key
+  try {
+  const apiSlug = tile.slug
   const f       = FACETS[tile.facet] ?? FACETS.slate
 
-  let data
-  try {
-    const res = await fetch('/api/portfolio/' + apiSlug)
-    if (!res.ok) throw new Error('HTTP ' + res.status)
-    data = await res.json()
-  } catch (err) {
-    container.innerHTML = ''
-    const err_el = document.createElement('div')
-    err_el.className = 'portfolio-empty'
-    err_el.innerHTML = `
-      <div class="portfolio-empty-icon" style="font-size:20px;opacity:0.4">⚠</div>
-      <div class="portfolio-empty-text">Could not load portfolio</div>
-    `
-    container.appendChild(err_el)
-    return
-  }
+  const url = '/api/portfolio/' + apiSlug
+  console.log('[portfolio] fetching', url)
+
+  const res = await fetch(url)
+  if (!res.ok) throw new Error('HTTP ' + res.status)
+  const data = await res.json()
 
   container.innerHTML = ''
 
@@ -348,6 +327,18 @@ async function renderPortfolio(tile) {
 
     holdSection.appendChild(holdList)
     container.appendChild(holdSection)
+  }
+
+  } catch (err) {
+    console.error('[portfolio] error:', err)
+    container.innerHTML = ''
+    const errEl = document.createElement('div')
+    errEl.className = 'portfolio-empty'
+    errEl.innerHTML = `
+      <div class="portfolio-empty-icon" style="font-size:20px;opacity:0.4">⚠</div>
+      <div class="portfolio-empty-text">Could not load portfolio<br><small style="opacity:0.5">${err.message}</small></div>
+    `
+    container.appendChild(errEl)
   }
 }
 
