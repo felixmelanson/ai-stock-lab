@@ -966,3 +966,243 @@ body.content-ready #right-pill { opacity: 1; }
 @media (max-width: 600px) {
   #tile-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── Portfolio loading ── */
+.portfolio-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+}
+
+/* ── pm-val-label state colors ── */
+.pm-val-label.pos { color: #22c55e; }
+.pm-val-label.neg { color: #ef4444; }
+
+/* ── Stats grid ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+.stat-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 7px 9px;
+}
+.stat-label {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.22);
+  margin-bottom: 3px;
+}
+.stat-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.88);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.stat-value.pos { color: #22c55e; }
+.stat-value.neg { color: #ef4444; }
+.stat-sub {
+  font-size: 9px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.28);
+  margin-top: 2px;
+}
+.pos { color: #22c55e; }
+.neg { color: #ef4444; }
+
+/* ── Cash / invested bar ── */
+.cash-bar-wrap { }
+.cash-bar {
+  display: flex;
+  height: 6px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.05);
+}
+.cash-bar-invested {
+  height: 100%;
+  border-radius: 4px 0 0 4px;
+  transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.cash-bar-cash {
+  height: 100%;
+  background: #2a2a2a;
+  border-radius: 0 4px 4px 0;
+  transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.cash-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  gap: 4px;
+}
+.cash-bar-labels span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  font-variant-numeric: tabular-nums;
+}
+.cash-bar-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Holdings list ── */
+.holdings-list {
+  display: flex;
+  flex-direction: column;
+}
+.holding-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.holding-item:last-child { border-bottom: none; }
+
+/* Clearbit logo */
+.holding-logo-wrap {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  position: relative;
+  margin-top: 1px;
+}
+.holding-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: contain;
+  background: rgba(255,255,255,0.06);
+  display: block;
+}
+.holding-logo-fallback {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid;
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.7);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Holding content */
+.holding-main {
+  flex: 1;
+  min-width: 0;
+}
+.holding-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.holding-ticker {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.2;
+}
+.holding-name {
+  font-size: 9.5px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.32);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90px;
+  line-height: 1.3;
+}
+.holding-sector-tag {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 1px 5px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.holding-mid {
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.28);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+.holding-bottom {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+.holding-change, .holding-pnl {
+  font-size: 9px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.holding-change.pos, .holding-pnl.pos { color: #22c55e; }
+.holding-change.neg, .holding-pnl.neg { color: #ef4444; }
+.holding-sep {
+  font-size: 9px;
+  color: rgba(255,255,255,0.15);
+}
+.holding-detail {
+  font-size: 8.5px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.2);
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Right column: market value + day change */
+.holding-right {
+  flex-shrink: 0;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 1px;
+}
+.holding-mv {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+  font-variant-numeric: tabular-nums;
+}
+.holding-pct {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.holding-pct.pos { color: #22c55e; background: rgba(34,197,94,0.1); }
+.holding-pct.neg { color: #ef4444; background: rgba(239,68,68,0.1); }
